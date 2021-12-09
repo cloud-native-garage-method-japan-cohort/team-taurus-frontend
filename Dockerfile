@@ -1,4 +1,4 @@
-FROM quay.io/jeffdean/node-alpine as build
+FROM node:12-alpine as build
 WORKDIR /app
 COPY . .
 RUN npm install
