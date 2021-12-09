@@ -6,6 +6,6 @@ spec:
   serviceAccountName: tekton-triggers-sa
   triggers:
     - bindings:
-        - ref: team-taurus-frontend-pipeline-from-scratch-pipeline-triggerbinding
+        - ref: taurus-frontend-pipeline-from-scratch-pipeline-triggerbinding
       template:
         ref: team-taurus-frontend-pipeline-from-scratch-triggertemplate
