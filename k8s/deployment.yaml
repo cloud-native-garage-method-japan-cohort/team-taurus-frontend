@@ -5,25 +5,25 @@ metadata:
     #app.openshift.io/vcs-ref: f7580aa1eb6f7176705176e201ecff4de93edafb
     #app.openshift.io/vcs-uri: https://github.com/cloud-native-garage-method-japan-cohort/taurus-frontend-express-sample-app.git
   labels:
-    app: taurus-frontend-pipeline-from-scratch
-    app.kubernetes.io/instance: taurus-frontend-pipeline-from-scratch
-    app.kubernetes.io/name: taurus-frontend-pipeline-from-scratch
+    app: team-taurus-frontend
+    app.kubernetes.io/instance: team-taurus-frontend
+    app.kubernetes.io/name: team-taurus-frontend
     app.openshift.io/runtime: js
-  name: taurus-frontend-pipeline-from-scratch
+  name: team-taurus-frontend
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/instance: taurus-frontend-pipeline-from-scratch
-      app.kubernetes.io/name: taurus-frontend-pipeline-from-scratch
+      app.kubernetes.io/instance: team-taurus-frontend
+      app.kubernetes.io/name: team-taurus-frontend
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app.kubernetes.io/instance: taurus-frontend-pipeline-from-scratch
-        app.kubernetes.io/name: taurus-frontend-pipeline-from-scratch
+        app.kubernetes.io/instance: team-taurus-frontend
+        app.kubernetes.io/name: team-taurus-frontend
     spec:
       containers:
         - env:
@@ -42,7 +42,7 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          name: taurus-frontend-pipeline-from-scratch
+          name: team-taurus-frontend
           ports:
             - containerPort: 3000
               name: http
