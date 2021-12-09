@@ -7,11 +7,11 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        generateName: team-taurus-frontend-pipeline-from-scratch-pipeline-run-
+        generateName: taurus-frontend-pipeline-from-scratch-pipeline-run-
       spec:
         serviceAccountName: build-bot
         pipelineRef:
-          name: team-taurus-frontend-pipeline-from-scratch-pipeline
+          name: taurus-frontend-pipeline-from-scratch-pipeline
         workspaces:
           - name: pipeline-shared-data
             persistentVolumeClaim:
