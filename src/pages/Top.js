@@ -3,7 +3,7 @@ import Layout from '../components/layout/Layout';
 
 import { makeStyles, Grid, Container, IconButton, Paper, InputBase} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
-import Sample from './Sample';
+import SearchResultList from './SearchResultList';
 import { post } from "../utils/api"
 
 const useStyles = makeStyles((theme) => ({
@@ -41,34 +41,13 @@ const style = {
 
 
 const Top = () => {
-  const { results, search } = useSearcgResults()
+  const { searchResult, search } = useSearch()
   const [sendText, setSendText] = useState('');
-  const [recvText, setRecvText] = useState('');
 
   const classes = useStyles();
 
   const onPressQuery = async (event) => {
     event.preventDefault();
-    const res = {
-      "total": 20,
-      "items": [
-        {
-          "id": 1,
-          "name": "ザバス ホエイプロテイン100 リッチショコラ味 1050g (約50食分)",
-          "flavor": "リッチショコラ味"
-        },
-        {
-          "id": 2,
-          "name": "ザバス ホエイプロテイン200 リッチショコラ味 1050g (約50食分)",
-          "flavor": "バニラ味"
-        },
-        {
-          "id": 3,
-          "name": "ザバス ホエイプロテイン300 リッチショコラ味 1050g (約50食分)",
-          "flavor": "ストロベリー味"
-        }                    
-      ]
-    }
     search(sendText)
   }
 
@@ -92,28 +71,22 @@ const Top = () => {
           </IconButton>
         </Paper>
       </form>
-      <div style={style}>
-        <Sample></Sample>
-      </div>
-      <Grid className={classes.grid}>
-        <Container>
-          <Grid>
-            {recvText}
-          </Grid>
-        </Container>
-      </Grid>
+      { searchResult && 
+          <div style={style}>
+          <SearchResultList list={searchResult.items}/>
+        </div> }
     </Layout>
   )
 }
 
 export default Top; 
 
-const useSearcgResults = () => {
-  const [results, setResults] = useState("")
+const useSearch = () => {
+  const [searchResult, setSearchResults] = useState(undefined)
   const search = async (keyword) => {
     if(!keyword) return
     const searchResults = await post("discovery/search", {searchText: keyword})
-    setResults(searchResults)
+    setSearchResults(searchResults)
   }
-  return {search, results}
+  return {search, searchResult}
 }
