@@ -38,19 +38,19 @@ spec:
         - name: ARGS
           value: 
             - clean-install
-    # - name: run-tests
-    #   runAfter:
-    #     - install-dependencies
-    #   taskRef:
-    #     kind: Task
-    #     name: npm
-    #   workspaces:
-    #     - name: source
-    #       workspace: pipeline-shared-data
-    #   params:
-    #     - name: ARGS
-    #       value: 
-    #         - test
+    - name: run-tests
+      runAfter:
+        - install-dependencies
+      taskRef:
+        kind: Task
+        name: npm
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: ARGS
+          value: 
+            - test
     - name: build-image
       runAfter:
         - install-dependencies
