@@ -1,10 +1,11 @@
 import React, { useState} from 'react';
 import Layout from '../components/layout/Layout';
 
-import { makeStyles, Grid, Container, IconButton, Paper, InputBase} from "@material-ui/core";
+import { makeStyles, IconButton, Paper, InputBase} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import SearchResultList from './SearchResultList';
 import { post } from "../utils/api"
+import Spinner  from "../components/spinner/Spinner"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +42,7 @@ const style = {
 
 
 const Top = () => {
-  const { searchResult, search } = useSearch()
+  const { searchResult, search, isSearching } = useSearch()
   const [sendText, setSendText] = useState('');
 
   const classes = useStyles();
@@ -71,10 +72,10 @@ const Top = () => {
           </IconButton>
         </Paper>
       </form>
-      { searchResult && 
-          <div style={style}>
-          <SearchResultList list={searchResult.items}/>
-        </div> }
+      <div style={style}>
+      { !isSearching && searchResult && <SearchResultList list={searchResult.items}/> }
+      { isSearching && <Spinner /> }
+      </div>
     </Layout>
   )
 }
@@ -83,10 +84,14 @@ export default Top;
 
 const useSearch = () => {
   const [searchResult, setSearchResults] = useState(undefined)
+  const [isSearching, setIsSearching] = useState(false)
   const search = async (keyword) => {
     if(!keyword) return
+    setIsSearching(true)
     const searchResults = await post("discovery/search", {searchText: keyword})
+    setIsSearching(false)
     setSearchResults(searchResults)
   }
-  return {search, searchResult}
+  return {search, searchResult, isSearching}
 }
+
