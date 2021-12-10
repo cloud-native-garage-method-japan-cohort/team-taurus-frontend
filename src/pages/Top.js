@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState} from 'react';
 import Layout from '../components/layout/Layout';
 
 import { makeStyles, Grid, Container, IconButton, Paper, InputBase} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
-
-import { queryDiscovery }from '../utils/index';
-import Sample from './Sample';
+import SearchResultList from './SearchResultList';
+import { post } from "../utils/api"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,38 +41,14 @@ const style = {
 
 
 const Top = () => {
+  const { searchResult, search } = useSearch()
   const [sendText, setSendText] = useState('');
-  const [recvText, setRecvText] = useState('');
 
   const classes = useStyles();
 
   const onPressQuery = async (event) => {
     event.preventDefault();
-    // const res = await queryDiscovery(sendText);
-    const res = {
-      "total": 20,
-      "items": [
-        {
-          "id": 1,
-          "name": "ザバス ホエイプロテイン100 リッチショコラ味 1050g (約50食分)",
-          "flavor": "リッチショコラ味"
-        },
-        {
-          "id": 2,
-          "name": "ザバス ホエイプロテイン200 リッチショコラ味 1050g (約50食分)",
-          "flavor": "バニラ味"
-        },
-        {
-          "id": 3,
-          "name": "ザバス ホエイプロテイン300 リッチショコラ味 1050g (約50食分)",
-          "flavor": "ストロベリー味"
-        }                    
-      ]
-    }
-    // setRecvText(res.data.responseText);
-    console.log("RES");
-    console.log(res);
-    // setSendText('');
+    search(sendText)
   }
 
   return (
@@ -82,7 +57,7 @@ const Top = () => {
         <Paper className={classes.root}>
           <InputBase
             className={classes.input}
-            placeholder="Watson Discovery で検索"
+            placeholder="ex: チョコレート"
             inputProps={{ 'aria-label': 'search watson discovery' }}
             onChange={(e)=>{setSendText(e.target.value)}}
           />
@@ -96,18 +71,22 @@ const Top = () => {
           </IconButton>
         </Paper>
       </form>
-      <div style={style}>
-        <Sample></Sample>
-      </div>
-      <Grid className={classes.grid}>
-        <Container>
-          <Grid>
-            {recvText}
-          </Grid>
-        </Container>
-      </Grid>
+      { searchResult && 
+          <div style={style}>
+          <SearchResultList list={searchResult.items}/>
+        </div> }
     </Layout>
   )
 }
 
 export default Top; 
+
+const useSearch = () => {
+  const [searchResult, setSearchResults] = useState(undefined)
+  const search = async (keyword) => {
+    if(!keyword) return
+    const searchResults = await post("discovery/search", {searchText: keyword})
+    setSearchResults(searchResults)
+  }
+  return {search, searchResult}
+}
