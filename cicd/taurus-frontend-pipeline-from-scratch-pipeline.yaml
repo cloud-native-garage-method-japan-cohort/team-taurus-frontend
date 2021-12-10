@@ -53,7 +53,7 @@ spec:
             - test
     - name: build-image
       runAfter:
-        - install-dependencies
+        - run-tests
       taskRef:
         kind: Task
         name: buildah
