@@ -57,7 +57,7 @@ const Top = () => {
         <Paper className={classes.root}>
           <InputBase
             className={classes.input}
-            placeholder="ex: バニラ"
+            placeholder="ex: チョコレート"
             inputProps={{ 'aria-label': 'search watson discovery' }}
             onChange={(e)=>{setSendText(e.target.value)}}
           />
