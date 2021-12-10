@@ -5,7 +5,13 @@ metadata:
 spec:
   serviceAccountName: tekton-triggers-sa
   triggers:
-    - bindings:
-        - ref: taurus-frontend-pipeline-from-scratch-pipeline-triggerbinding
-      template:
-        ref: team-taurus-frontend-pipeline-from-scratch-triggertemplate
+  - name: deploy-trigger-for-front
+    interceptors:
+    - github:
+        eventTypes: ["push"]
+    - cel:
+      filter: "body.repository.name == 'orion-frontend' && body.ref.split('/')[2] == 'main'"
+    bindings:
+      - ref: taurus-frontend-pipeline-from-scratch-pipeline-triggerbinding
+    template:
+      ref: team-taurus-frontend-pipeline-from-scratch-triggertemplate
