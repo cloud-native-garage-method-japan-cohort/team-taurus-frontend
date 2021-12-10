@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState} from 'react';
 import Layout from '../components/layout/Layout';
 
 import { makeStyles, Grid, Container, IconButton, Paper, InputBase} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
-
-import { queryDiscovery }from '../utils/index';
 import Sample from './Sample';
+import { post } from "../utils/api"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +41,7 @@ const style = {
 
 
 const Top = () => {
+  const { results, search } = useSearcgResults()
   const [sendText, setSendText] = useState('');
   const [recvText, setRecvText] = useState('');
 
@@ -49,7 +49,6 @@ const Top = () => {
 
   const onPressQuery = async (event) => {
     event.preventDefault();
-    // const res = await queryDiscovery(sendText);
     const res = {
       "total": 20,
       "items": [
@@ -70,10 +69,7 @@ const Top = () => {
         }                    
       ]
     }
-    // setRecvText(res.data.responseText);
-    console.log("RES");
-    console.log(res);
-    // setSendText('');
+    search(sendText)
   }
 
   return (
@@ -111,3 +107,13 @@ const Top = () => {
 }
 
 export default Top; 
+
+const useSearcgResults = () => {
+  const [results, setResults] = useState("")
+  const search = async (keyword) => {
+    if(!keyword) return
+    const searchResults = await post("discovery/search", {searchText: keyword})
+    setResults(searchResults)
+  }
+  return {search, results}
+}
